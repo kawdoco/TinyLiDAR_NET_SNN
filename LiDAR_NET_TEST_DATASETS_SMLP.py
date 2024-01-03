@@ -21,7 +21,7 @@ no_samples=1000
 no_gestures=10
 timestep=8
 
-frame=np.load('datasets_test.npy')  
+frame=np.load('datasets_total_woab.npy')  
 gesture_gt=np.load('label_test.npy')   
 gesture_gt=np.transpose(gesture_gt,(1,0))
 
@@ -79,10 +79,10 @@ plt.figure(figsize=(8, 6))
 sns.heatmap(cm, fmt="d", cmap="Blues", cbar=True,vmin=0, vmax=100)
 plt.xticks(ticks=np.arange(0,10), labels=np.arange(0,10)+1)
 plt.yticks(ticks=np.arange(0,10), labels=np.arange(0,10)+1)
-plt.title(f"SMLP Confusion Matrix\nAccuracy: 82.5%")
+plt.title(f"SMLP Confusion Matrix w/o AL \nAccuracy: {accuracy*100:.2f}%")
 plt.xlabel("Predicted gestures")
 plt.ylabel("True gestures")
 plt.tight_layout()
 dpi_value = 300  # Adjust this value as needed
-plt.savefig(r'./Figures/SMLP_confusion_matrix.png', dpi=dpi_value)
+plt.savefig(r'./Figures/SMLP_confusion_matrix_wo_AL.png', dpi=dpi_value)
 plt.show()
