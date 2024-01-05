@@ -51,9 +51,9 @@ gesture_hat=torch.zeros(no_samples,1)
 start = time.time()
 yhat=0
 with torch.no_grad():
-    frame_torch = poisson_encode(frame_torch,timestep)
+    frame_torch_encoded = poisson_encode(frame_torch,timestep)
     reset_net(model)
-    for xt in frame_torch:
+    for xt in frame_torch_encoded:
         # input_T = xt.unsqueeze(0)
         yhat += model(xt.float())
     yhat = yhat.softmax(-1)
@@ -85,3 +85,15 @@ plt.tight_layout()
 dpi_value = 300  # Adjust this value as needed
 plt.savefig(r'./Figures/SCNN_confusion_matrix_wo_AL.png', dpi=dpi_value)
 plt.show()
+#%%
+index=950
+encoded=frame_torch_encoded.numpy()
+encoded=encoded.sum(0)
+encoded=encoded.squeeze()
+
+original_pick = frame_torch[index,:,:,:].squeeze().numpy()
+encoded_pick = encoded[index,:,:]
+
+plt.imshow(encoded_pick, cmap='rainbow')
+plt.tight_layout()
+
