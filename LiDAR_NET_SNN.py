@@ -20,20 +20,20 @@ class LiDAR_NET_SNN(Module):
         super(LiDAR_NET_SNN, self).__init__()
         self.conv1 = Conv2d(1,5,5,1)
         self.BN1 = nn.BatchNorm2d(5)
-        self.IF1 = snn.LIFNode()
+        self.IF1 = snn.IFNode()
         
         self.conv2 = Conv2d(5,5,3,1)
         self.BN2 = nn.BatchNorm2d(5)
-        self.IF2 = snn.LIFNode()
+        self.IF2 = snn.IFNode()
         
         self.conv3 = Conv2d(5,5,3,2)
         self.BN3 = nn.BatchNorm2d(5)
-        self.IF3 = snn.LIFNode()
+        self.IF3 = snn.IFNode()
         
         self.flatten = Flatten()
         
         self.fc1 = Linear(405,100)
-        self.IF4 = snn.LIFNode()
+        self.IF4 = snn.IFNode()
         
         self.fc2 = Linear(100,10)
         self.IF5 = snn.IFNode()

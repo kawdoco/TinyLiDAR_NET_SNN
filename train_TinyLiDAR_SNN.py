@@ -17,7 +17,6 @@ from torch.nn import MSELoss, CrossEntropyLoss
 import torch.nn.functional as F
 from EarlyStopping import EarlyStopping
 
-from LiDAR_NET_MLP import LiDAR_NET_MLP
 from LiDAR_NET_CNN import LiDAR_NET_CNN
 from LiDAR_NET_SNN import LiDAR_NET_SNN,LiDAR_NET_SNN_MLP
 

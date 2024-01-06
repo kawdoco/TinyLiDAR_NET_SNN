@@ -21,7 +21,7 @@ no_samples=1000
 no_gestures=10
 timestep=8
 
-frame=np.load('datasets_total_woab.npy')  
+frame=np.load(r'datasets_total_woab.npy')  
 gesture_gt=np.load('label_test.npy')   
 gesture_gt=np.transpose(gesture_gt,(1,0))
 
@@ -32,7 +32,7 @@ frame = frame.unsqueeze(0)
 frame=np.transpose(frame, (3,0,1,2))
 
 #use gpu
-PATH=r'./LiDAR_NET_Pre_trained_model_SNN_CNN/ckpt_epoch_27_val_loss_1.464008.pth'
+PATH=r'./LiDAR_NET_Pre_trained_model_SNN_CNN/ckpt_epoch_70_val_loss_1.463720.pth'
 model = LiDAR_NET_SNN()
 
 #use cpu
@@ -54,12 +54,9 @@ with torch.no_grad():
     frame_torch_encoded = poisson_encode(frame_torch,timestep)
     reset_net(model)
     for xt in frame_torch_encoded:
-        # input_T = xt.unsqueeze(0)
         yhat += model(xt.float())
     yhat = yhat.softmax(-1)
     pred = yhat.argmax(1)
-    # print(pred)
-    # gesture_hat[i] = pred
 end = time.time()
 
 max_index_gt = np.zeros(no_samples)
@@ -96,4 +93,12 @@ encoded_pick = encoded[index,:,:]
 
 plt.imshow(encoded_pick, cmap='rainbow')
 plt.tight_layout()
+#%%
+from thop import profile
 
+tensor = (torch.rand(1, 1, 25, 25),)
+flops, params = profile(model, inputs=tensor)
+print('SCNN')
+print('FLOPs =', flops)
+print('params = MB', params/1e6)
+print('model size', params*8/1e6)

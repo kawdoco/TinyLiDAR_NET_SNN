@@ -42,5 +42,5 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 dpi_value = 300  # Adjust this value as needed
-plt.savefig(r'./Figures/acc_total.png', dpi=dpi_value)
+# plt.savefig(r'./Figures/acc_total.png', dpi=dpi_value)
 plt.show()

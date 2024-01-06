@@ -32,7 +32,7 @@ frame = frame.unsqueeze(0)
 frame=np.transpose(frame, (3,0,1,2))
 
 #use gpu
-PATH=r'./LiDAR_NET_Pre_trained_model_SNN_MLP/ckpt_epoch_74_val_loss_1.463720.pth'
+PATH=r'./LiDAR_NET_Pre_trained_model_SNN_MLP/ckpt_epoch_139_val_loss_1.463720.pth'
 model = LiDAR_NET_SNN_MLP()
 
 #use cpu
@@ -48,16 +48,15 @@ frame_torch = frame.to(device)
 
 gesture_hat=torch.zeros(no_samples,1)
 
-start = time.time()
 yhat=0
 
 pred = torch.zeros(no_samples,1)
 
+start = time.time()
 with torch.no_grad():
     frame_torch = poisson_encode(frame_torch,timestep)
     reset_net(model)
     for xt in frame_torch:
-        # input_T = xt.unsqueeze(0)
         yhat += model(xt.float())
     yhat = yhat.softmax(-1)
     pred = yhat.argmax(1)
@@ -86,3 +85,12 @@ plt.tight_layout()
 dpi_value = 300  # Adjust this value as needed
 plt.savefig(r'./Figures/SMLP_confusion_matrix_wo_AL.png', dpi=dpi_value)
 plt.show()
+#%%
+from thop import profile
+
+tensor = (torch.rand(1, 1, 25, 25),)
+flops, params = profile(model, inputs=tensor)
+print('SMLP')
+print('FLOPs =', flops)
+print('params = ', params/1e6)
+print('Model Size = ', params*8/1e6)

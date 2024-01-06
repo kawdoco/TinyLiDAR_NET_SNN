@@ -87,3 +87,16 @@ plt.tight_layout()
 dpi_value = 300  # Adjust this value as needed
 plt.savefig(r'./Figures/CNN_woab_confusion_matrix.png', dpi=dpi_value)
 plt.show()
+#%%
+from thop import profile
+
+tensor = (torch.rand(1, 1, 25, 25),)
+flops, params = profile(model, inputs=tensor)
+print('CNN', flops)
+print('FLOPs =', flops)
+print('params = ', params/1e6)
+print('model size = ', params*8/1e6)
+
+#%%
+
+
