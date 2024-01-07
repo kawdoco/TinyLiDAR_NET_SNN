@@ -34,7 +34,7 @@ frame = frame.unsqueeze(0)
 frame=np.transpose(frame, (3,0,1,2))
 
 #use gpu
-PATH=r'./LiDAR_NET_Pre_trained_model/ckpt_epoch_68_val_loss_1.461150.pth'
+PATH=r'./LiDAR_NET_Pre_trained_model/ckpt_epoch_150_val_loss_1.461150.pth'
 model = LiDAR_NET_CNN()
 
 #use cpu

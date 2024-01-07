@@ -21,22 +21,22 @@ def Conv_Add(in_planes, out_planes, kernel_size, stride, padding=0, bias=False):
 class LiDAR_NET_CNN(Module):
     def __init__(self):
         super(LiDAR_NET_CNN, self).__init__()
-        self.conv1 = Conv2d(1,5,5,1)
+        self.conv1 = Conv2d(1,5,5,1)#FLOPs=2x(1x21x21x5x5x5) = 110250
         self.bn1 = BatchNorm2d(5)
         
-        self.conv2 = Conv2d(5,5,3,1)
+        self.conv2 = Conv2d(5,5,3,1)#FLOPs=2x(5x19x19x5x5x5) = 451250
         self.bn2 = BatchNorm2d(5)
         
-        self.conv3 = Conv2d(5,5,3,2)
+        self.conv3 = Conv2d(5,5,3,2)#FLOPs=2x(5x9x9x5x5x5) = 101250
         self.bn3 = BatchNorm2d(5)
         
         self.flatten = Flatten()
         
-        self.fc1 = Linear(405,100)
-        self.fc2= Linear(100,10)
+        self.fc1 = Linear(405,100)#FLOPs=2x(405x100) = 81000
+        self.fc2= Linear(100,10)#FLOPs=2x(100x10) = 2000
         
         self.softmax = Softmax(dim=1)
-                                 
+                                 # total flops=
     # forward propagate input
     def forward(self, x):
         x = self.conv1(x)
