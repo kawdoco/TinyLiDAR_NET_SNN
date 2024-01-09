@@ -76,11 +76,11 @@ class LiDAR_NET_SNN_MLP(Module):
     def __init__(self):
         super(LiDAR_NET_SNN_MLP, self).__init__()
         self.flatten = Flatten()
-        self.fc1 = Linear(25*25,200) # FLOPs = 625 x 200 x 2 = 250000, 250000x1.894=
+        self.fc1 = Linear(25*25,200) # FLOPs = 625 x 200 x 2 = 250000, 250000x1.894=473500
         self.DO1 = nn.Dropout(0.2)
         self.IF1 = snn.IFNode()
         
-        self.fc2 = Linear(200,10) # FLOPs = 200 x 10 x 2 = 4000, 4000x2.28=
+        self.fc2 = Linear(200,10) # FLOPs = 200 x 10 x 2 = 4000, 4000x2.28=9120
         self.DO2 = nn.Dropout(0.2)
         self.IF2 = snn.IFNode()
                                      #total FLOPs = 254000
