@@ -15,9 +15,9 @@ from spikingjelly.activation_based import (
     layer as sl,
 )
 
-class LiDAR_NET_SNN(Module):
+class LiDAR_NET_SCNN(Module):
     def __init__(self):
-        super(LiDAR_NET_SNN, self).__init__()
+        super(LiDAR_NET_SCNN, self).__init__()
         self.conv1 = Conv2d(1,5,5,1)
         self.BN1 = nn.BatchNorm2d(5)
         self.IF1 = snn.IFNode()
@@ -69,7 +69,7 @@ class LiDAR_NET_SNN(Module):
         
         # gesture_hat = self.softmax(gesture_hat)
                 
-        return gesture_hat,conv1_spikes,conv2_spikes,conv3_spikes,fc1_spikes,fc2_spikes
+        return gesture_hat#,conv1_spikes,conv2_spikes,conv3_spikes,fc1_spikes,fc2_spikes
     
     
 class LiDAR_NET_SNN_MLP(Module):

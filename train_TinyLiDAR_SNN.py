@@ -18,7 +18,7 @@ import torch.nn.functional as F
 from EarlyStopping import EarlyStopping
 
 from LiDAR_NET_CNN import LiDAR_NET_CNN
-from LiDAR_NET_SNN import LiDAR_NET_SNN,LiDAR_NET_SNN_MLP
+from LiDAR_NET_SNN import LiDAR_NET_SCNN,LiDAR_NET_SNN_MLP
 
 import torch.optim.lr_scheduler as lr_scheduler
 
@@ -189,7 +189,7 @@ if __name__ == '__main__':
 
     ckpt_dir='./LiDAR_NET_Pre_trained_model_SNN_CNN'
     os.makedirs(ckpt_dir,exist_ok=True)
-    model = LiDAR_NET_SNN() #LiDAR_NET_SNN LiDAR_NET_SNN_MLP
+    model = LiDAR_NET_SCNN() #LiDAR_NET_SCNN LiDAR_NET_SNN_MLP
         
     if USE_GPU:
         model.cuda() 

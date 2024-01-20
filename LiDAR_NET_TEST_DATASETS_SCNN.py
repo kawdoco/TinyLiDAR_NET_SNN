@@ -11,8 +11,8 @@ import time
 import seaborn as sns
 import pandas as pd
 from sklearn import metrics
-from LiDAR_NET_SNN import LiDAR_NET_SNN,LiDAR_NET_SNN_MLP
-from utils import poisson_encode
+from LiDAR_NET_SNN import LiDAR_NET_SCNN,LiDAR_NET_SNN_MLP
+from utils import poisson_encode,plot_confusion_matrix
 from spikingjelly.activation_based.functional import reset_net
 #%%
 torch.set_printoptions(precision=10)
@@ -21,7 +21,7 @@ no_samples=1000
 no_gestures=10
 timestep=8
 
-frame=np.load(r'datasets_total_woab.npy')  
+frame=np.load(r'datasets_test.npy')  
 gesture_gt=np.load('label_test.npy')   
 gesture_gt=np.transpose(gesture_gt,(1,0))
 
@@ -33,7 +33,7 @@ frame=np.transpose(frame, (3,0,1,2))
 
 #use gpu
 PATH=r'./LiDAR_NET_Pre_trained_model_SNN_CNN/ckpt_epoch_70_val_loss_1.463720.pth'
-model = LiDAR_NET_SNN()
+model = LiDAR_NET_SCNN()
 
 #use cpu
 #checkpoint = torch.load(PATH, map_location='cpu')
@@ -80,7 +80,7 @@ plt.xlabel("Predicted gestures")
 plt.ylabel("True gestures")
 plt.tight_layout()
 dpi_value = 300  # Adjust this value as needed
-plt.savefig(r'./Figures/SCNN_confusion_matrix_wo_AL.png', dpi=dpi_value)
+# plt.savefig(r'./Figures/SCNN_confusion_matrix_wo_AL.png', dpi=dpi_value)
 plt.show()
 #%%
 index=950
@@ -94,11 +94,19 @@ encoded_pick = encoded[index,:,:]
 plt.imshow(encoded_pick, cmap='rainbow')
 plt.tight_layout()
 #%%
-from thop import profile
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+import numpy as np
 
-tensor = (torch.rand(1, 1, 25, 25),)
-flops, params = profile(model, inputs=tensor)
-print('SCNN')
-print('FLOPs =', flops)
-print('params = MB', params/1e6)
-print('model size', params*8/1e6)
+accuracy = accuracy_score(max_index_gt, pred)
+# Assuming max_index_gt and pred are your ground truth and predicted labels
+# Adjust labels parameter based on the range of your labels
+labels = np.arange(0, 10)
+
+# Create the confusion matrix
+cm = confusion_matrix(max_index_gt, pred, labels=labels)
+# Plot the confusion matrix as a heatmap with values in each square
+plt.figure(figsize=(10, 8))
+plot_confusion_matrix(cm, classes=labels, normalize=True, savename="Figures/SCNN_confusion_matrix.png", title=f'SCNN Confusion Matrix w/ AL \nAccuracy: {accuracy*100:.2f}%')
+
